@@ -1,0 +1,24 @@
+version: '3'
+services:
+  client:
+    image: izhal/users-client
+    build: ./client
+    ports:
+      - 5050:80
+    stdin_open: true
+  api:
+    image: izhal/users-server
+    build: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+  db:
+    image: mariadb
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=todolist_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root

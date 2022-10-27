@@ -1,0 +1,32 @@
+version: '3'
+services:
+  client:
+    image: izhal/users-client
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - ./client:/app
+    ports:
+      - 3000:3000
+    stdin_open: true
+  api:
+    image: izhal/users-server
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+    - 5000:5000
+  db:
+    image: mariadb
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=joox
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456
